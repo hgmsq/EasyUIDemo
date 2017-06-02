@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EasyUIDemoDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EasyUIDemoDBModelStoreContainer">
+    <EntitySet Name="UserInfo" EntityType="EasyUIDemoDBModel.Store.UserInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CourseInfoSet" EntityType="EasyUIDemoDBModel.Store.CourseInfoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StudentScoreSet" EntityType="EasyUIDemoDBModel.Store.StudentScoreSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserInfoStudentScore" Association="EasyUIDemoDBModel.Store.UserInfoStudentScore">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+    <AssociationSet Name="CourseInfoStudentScore" Association="EasyUIDemoDBModel.Store.CourseInfoStudentScore">
+      <End Role="CourseInfo" EntitySet="CourseInfoSet" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Mail" Type="varchar" Nullable="false" MaxLength="32" />
+    <Property Name="Phone" Type="varchar" Nullable="true" MaxLength="16" />
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="true" />
+    <Property Name="Enable" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CourseInfoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentScoreSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Score" Type="int" Nullable="false" />
+    <Property Name="UserInfoID" Type="int" Nullable="false" />
+    <Property Name="CourseInfoId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="UserInfoStudentScore">
+    <End Role="UserInfo" Type="EasyUIDemoDBModel.Store.UserInfo" Multiplicity="1" />
+    <End Role="StudentScore" Type="EasyUIDemoDBModel.Store.StudentScoreSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="UserInfoID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CourseInfoStudentScore">
+    <End Role="CourseInfo" Type="EasyUIDemoDBModel.Store.CourseInfoSet" Multiplicity="1" />
+    <End Role="StudentScore" Type="EasyUIDemoDBModel.Store.StudentScoreSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="CourseInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EasyUIDemoDBModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="EasyUIDemoDBEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="UserInfo" EntityType="EasyUIDemoDBModel.UserInfo" />
+          <EntitySet Name="CourseInfoSet" EntityType="EasyUIDemoDBModel.CourseInfo" />
+          <EntitySet Name="StudentScoreSet" EntityType="EasyUIDemoDBModel.StudentScore" />
+          <AssociationSet Name="UserInfoStudentScore" Association="EasyUIDemoDBModel.UserInfoStudentScore">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="StudentScore" EntitySet="StudentScoreSet" />
+          </AssociationSet>
+          <AssociationSet Name="CourseInfoStudentScore" Association="EasyUIDemoDBModel.CourseInfoStudentScore">
+            <End Role="CourseInfo" EntitySet="CourseInfoSet" />
+            <End Role="StudentScore" EntitySet="StudentScoreSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Mail" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Phone" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreateTime" Precision="3" />
+          <Property Type="Boolean" Name="Enable" Nullable="false" />
+          <NavigationProperty Name="StudentScore" Relationship="EasyUIDemoDBModel.UserInfoStudentScore" FromRole="UserInfo" ToRole="StudentScore" />
+        </EntityType>
+        <EntityType Name="CourseInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="CourseName" Type="String" Nullable="false" />
+          <NavigationProperty Name="StudentScore" Relationship="EasyUIDemoDBModel.CourseInfoStudentScore" FromRole="CourseInfo" ToRole="StudentScore" />
+        </EntityType>
+        <EntityType Name="StudentScore">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserInfo" Relationship="EasyUIDemoDBModel.UserInfoStudentScore" FromRole="StudentScore" ToRole="UserInfo" />
+          <Property Name="UserInfoID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseInfo" Relationship="EasyUIDemoDBModel.CourseInfoStudentScore" FromRole="StudentScore" ToRole="CourseInfo" />
+          <Property Name="CourseInfoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UserInfoStudentScore">
+          <End Type="EasyUIDemoDBModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+          <End Type="EasyUIDemoDBModel.StudentScore" Role="StudentScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentScore">
+              <PropertyRef Name="UserInfoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CourseInfoStudentScore">
+          <End Type="EasyUIDemoDBModel.CourseInfo" Role="CourseInfo" Multiplicity="1" />
+          <End Type="EasyUIDemoDBModel.StudentScore" Role="StudentScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentScore">
+              <PropertyRef Name="CourseInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EasyUIDemoDBModelStoreContainer" CdmEntityContainer="EasyUIDemoDBEntities">
+    <EntitySetMapping Name="UserInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyUIDemoDBModel.UserInfo)">
+        <MappingFragment StoreEntitySet="UserInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Mail" ColumnName="Mail" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Enable" ColumnName="Enable" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CourseInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyUIDemoDBModel.CourseInfo)">
+        <MappingFragment StoreEntitySet="CourseInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentScoreSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyUIDemoDBModel.StudentScore)">
+        <MappingFragment StoreEntitySet="StudentScoreSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="CourseInfoId" ColumnName="CourseInfoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="False" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams />
+  </edmx:Designer>
+</edmx:Edmx>

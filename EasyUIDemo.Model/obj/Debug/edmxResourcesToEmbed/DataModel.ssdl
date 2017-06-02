@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EasyUIDemoDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EasyUIDemoDBModelStoreContainer">
+    <EntitySet Name="UserInfo" EntityType="EasyUIDemoDBModel.Store.UserInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CourseInfoSet" EntityType="EasyUIDemoDBModel.Store.CourseInfoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StudentScoreSet" EntityType="EasyUIDemoDBModel.Store.StudentScoreSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserInfoStudentScore" Association="EasyUIDemoDBModel.Store.UserInfoStudentScore">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+    <AssociationSet Name="CourseInfoStudentScore" Association="EasyUIDemoDBModel.Store.CourseInfoStudentScore">
+      <End Role="CourseInfo" EntitySet="CourseInfoSet" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Mail" Type="varchar" Nullable="false" MaxLength="32" />
+    <Property Name="Phone" Type="varchar" Nullable="true" MaxLength="16" />
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="true" />
+    <Property Name="Enable" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CourseInfoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CourseName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentScoreSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Score" Type="int" Nullable="false" />
+    <Property Name="UserInfoID" Type="int" Nullable="false" />
+    <Property Name="CourseInfoId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="UserInfoStudentScore">
+    <End Role="UserInfo" Type="EasyUIDemoDBModel.Store.UserInfo" Multiplicity="1" />
+    <End Role="StudentScore" Type="EasyUIDemoDBModel.Store.StudentScoreSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="UserInfoID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CourseInfoStudentScore">
+    <End Role="CourseInfo" Type="EasyUIDemoDBModel.Store.CourseInfoSet" Multiplicity="1" />
+    <End Role="StudentScore" Type="EasyUIDemoDBModel.Store.StudentScoreSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="CourseInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

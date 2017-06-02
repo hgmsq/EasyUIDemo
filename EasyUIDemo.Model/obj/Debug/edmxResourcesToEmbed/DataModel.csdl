@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EasyUIDemoDBModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="EasyUIDemoDBEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+    <EntitySet Name="UserInfo" EntityType="EasyUIDemoDBModel.UserInfo" />
+    <EntitySet Name="CourseInfoSet" EntityType="EasyUIDemoDBModel.CourseInfo" />
+    <EntitySet Name="StudentScoreSet" EntityType="EasyUIDemoDBModel.StudentScore" />
+    <AssociationSet Name="UserInfoStudentScore" Association="EasyUIDemoDBModel.UserInfoStudentScore">
+      <End Role="UserInfo" EntitySet="UserInfo" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+    <AssociationSet Name="CourseInfoStudentScore" Association="EasyUIDemoDBModel.CourseInfoStudentScore">
+      <End Role="CourseInfo" EntitySet="CourseInfoSet" />
+      <End Role="StudentScore" EntitySet="StudentScoreSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Mail" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Phone" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Address" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="CreateTime" Precision="3" />
+    <Property Type="Boolean" Name="Enable" Nullable="false" />
+    <NavigationProperty Name="StudentScore" Relationship="EasyUIDemoDBModel.UserInfoStudentScore" FromRole="UserInfo" ToRole="StudentScore" />
+  </EntityType>
+  <EntityType Name="CourseInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="CourseName" Type="String" Nullable="false" />
+    <NavigationProperty Name="StudentScore" Relationship="EasyUIDemoDBModel.CourseInfoStudentScore" FromRole="CourseInfo" ToRole="StudentScore" />
+  </EntityType>
+  <EntityType Name="StudentScore">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="Score" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserInfo" Relationship="EasyUIDemoDBModel.UserInfoStudentScore" FromRole="StudentScore" ToRole="UserInfo" />
+    <Property Name="UserInfoID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CourseInfo" Relationship="EasyUIDemoDBModel.CourseInfoStudentScore" FromRole="StudentScore" ToRole="CourseInfo" />
+    <Property Name="CourseInfoId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="UserInfoStudentScore">
+    <End Type="EasyUIDemoDBModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="EasyUIDemoDBModel.StudentScore" Role="StudentScore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="UserInfoID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CourseInfoStudentScore">
+    <End Type="EasyUIDemoDBModel.CourseInfo" Role="CourseInfo" Multiplicity="1" />
+    <End Type="EasyUIDemoDBModel.StudentScore" Role="StudentScore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentScore">
+        <PropertyRef Name="CourseInfoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
